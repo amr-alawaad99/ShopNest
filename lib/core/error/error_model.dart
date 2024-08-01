@@ -2,14 +2,14 @@ import 'package:shopnest/core/api/end_points.dart';
 
 class ErrorModel {
   final int status;
-  final String message;
+  final String errorMessage;
 
-  ErrorModel({required this.status, required this.message});
+  ErrorModel({required this.status, required this.errorMessage});
 
   factory ErrorModel.fromJson(Map<String, dynamic> jsonData) {
     return ErrorModel(
       status: jsonData[ApiKey.status],
-      message: jsonData[ApiKey.errorMessage],
+      errorMessage: jsonData[ApiKey.errorMessage],
     );
   }
 }
