@@ -37,7 +37,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: size.width * 0.9,
       child: Column(
         children: [
@@ -82,7 +82,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
               suffixIconConstraints: (widget.isDense != null)
                   ? const BoxConstraints(maxHeight: 33)
                   : null,
-              prefixIcon: widget.prefixIcon? const Icon(Icons.search) : null,
+              prefixIcon: widget.prefixIcon ? const Icon(Icons.search) : null,
             ),
             validator: widget.validator,
             controller: widget.controller,

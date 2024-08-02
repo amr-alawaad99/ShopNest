@@ -32,20 +32,19 @@ class LayoutScreen extends StatelessWidget {
             ),
             centerTitle: true,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(size.height*0.01),
+              preferredSize: Size.fromHeight(size.height * 0.01),
               child: Container(),
             ),
           ),
-          body: HomeScreen(),
+          body: const HomeScreen(),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: 0,
-            onTap: (value) {
-              context.read<MainCubit>().getHomeData();
-
-            },
+            onTap: (value) {},
             items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined), label: "Home",),
+                icon: Icon(Icons.home_outlined),
+                label: "Home",
+              ),
               BottomNavigationBarItem(
                   icon: Icon(Icons.favorite_border), label: "Favorite"),
               BottomNavigationBarItem(

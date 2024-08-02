@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/models/home_model.dart';
 
 class HomeProductsWidget extends StatelessWidget {
@@ -21,14 +22,46 @@ class HomeProductsWidget extends StatelessWidget {
           .map(
             (e) => Column(
               children: [
-                Container(
-                  width: size.width * 0.49,
-                  height: size.width * 0.49,
-                  color: Colors.white,
-                  child: Image(
-                    image: NetworkImage(e.image!),
-                    fit: BoxFit.contain,
-                  ),
+                Stack(
+                  children: [
+                    /// Product Image
+                    Container(
+                      width: size.width * 0.49,
+                      height: size.width * 0.49,
+                      color: Colors.white,
+                      child: Image(
+                        image: NetworkImage(e.image!),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+
+                    /// Favorite Icon Button
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.favorite_outline,
+                          color: Constants.primaryColor,
+                        ),
+                      ),
+                    ),
+
+                    /// Discount Container
+                    if (e.oldPrice != e.price)
+                      Positioned(
+                        left: 0,
+                        bottom: 0,
+                        child: Container(
+                          color: Colors.red,
+                          child: Text(
+                            " ${(((e.oldPrice - e.price) / e.oldPrice) * 100 as double).round()}% off ",
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 Text(
                   e.name!,
@@ -39,12 +72,14 @@ class HomeProductsWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: size.height*0.01,),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(top: size.aspectRatio*7),
+                      padding: EdgeInsets.only(top: size.aspectRatio * 7),
                       child: Text(
                         "EGP",
                         style: TextStyle(fontSize: size.aspectRatio * 25),
@@ -61,30 +96,30 @@ class HomeProductsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                if(e.oldPrice - e.price != 0)
+                if (e.oldPrice != e.price)
                   Row(
-                  children: [
-                    Text(
-                      "Was: ",
-                      style: TextStyle(
-                        fontSize: size.aspectRatio * 30,
+                    children: [
+                      Text(
+                        "Was: ",
+                        style: TextStyle(
+                          fontSize: size.aspectRatio * 30,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "EGP ${e.oldPrice.toString()}",
-                      style: TextStyle(
-                        fontSize: size.aspectRatio * 30,
-                        decoration: TextDecoration.lineThrough,
+                      Text(
+                        "EGP ${e.oldPrice.toString()}",
+                        style: TextStyle(
+                          fontSize: size.aspectRatio * 30,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
               ],
             ),
           )

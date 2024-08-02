@@ -17,12 +17,14 @@ Future<void> main() async {
   Bloc.observer = MyBlocObserver();
 
   bool isSignedIn = false;
-  if(CacheHelper().getData(key: ApiKey.token) != null){
+  if (CacheHelper().getData(key: ApiKey.token) != null) {
     isSignedIn = true;
   }
   runApp(
     BlocProvider(
-      create: (context) => MainCubit(DioConsumer(dio: Dio())),
+      create: (context) => isSignedIn
+          ? (MainCubit(DioConsumer(dio: Dio()))..getHomeData())
+          : MainCubit(DioConsumer(dio: Dio())),
       child: MyApp(isSignedIn),
     ),
   );
@@ -38,19 +40,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          color: Constants.primaryColor
-        ),
-        scaffoldBackgroundColor: Constants.secondaryColor,
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Constants.primaryColor,
-          selectedItemColor: Constants.secondaryColor,
-        )
-      ),
+          appBarTheme: AppBarTheme(color: Constants.primaryColor),
+          scaffoldBackgroundColor: Constants.secondaryColor,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Constants.primaryColor,
+            selectedItemColor: Constants.secondaryColor,
+          )),
       debugShowCheckedModeBanner: false,
-      home: isSignedIn? LayoutScreen() : SignInScreen(),
+      home: isSignedIn ? const LayoutScreen() : SignInScreen(),
     );
   }
 }
-
