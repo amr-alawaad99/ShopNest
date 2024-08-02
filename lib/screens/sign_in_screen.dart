@@ -23,14 +23,15 @@ class SignInScreen extends StatelessWidget {
         .size;
     return SafeArea(
       child: BlocConsumer<MainCubit, MainState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is SignInSuccessState && !state.state) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)));
           } else if (state is SignInSuccessState && state.state) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)));
-            context.read<MainCubit>().getUserProfile();
+            await context.read<MainCubit>().getUserProfile();
+            context.read<MainCubit>().getHomeData();
             Navigator.pushAndRemoveUntil(
               context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (
                 route) => false,);

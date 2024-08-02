@@ -26,7 +26,6 @@ class BannerWidget extends StatelessWidget {
         autoPlay: true,
         autoPlayInterval: const Duration(seconds: 5),
         autoPlayAnimationDuration: const Duration(seconds: 1),
-
       ),
     );
   }

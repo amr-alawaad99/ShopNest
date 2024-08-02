@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopnest/cache/cache_helper.dart';
+import 'package:shopnest/core/api/end_points.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/screens/home_screen.dart';
+import 'package:shopnest/screens/sign_in_screen.dart';
 
 import '../widgets/custom_input_field.dart';
 
@@ -39,7 +42,10 @@ class LayoutScreen extends StatelessWidget {
           body: const HomeScreen(),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: 0,
-            onTap: (value) {},
+            onTap: (value) {
+              // CacheHelper().removeData(key: ApiKey.token);
+              // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen(),), (route) => false,);
+            },
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),

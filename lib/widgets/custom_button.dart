@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String innerText;
   final void Function()? onPressed;
-  const CustomButton({Key? key, required this.innerText, required this.onPressed}) : super(key: key);
+  final bool havePrefix;
+  final double borderRadius;
+
+  const CustomButton({
+    Key? key,
+    required this.innerText,
+    required this.onPressed,
+    this.havePrefix = false,
+    this.borderRadius = 26,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +21,24 @@ class CustomButton extends StatelessWidget {
       width: size.width * 0.8,
       decoration: BoxDecoration(
         color: const Color(0xff233743),
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(innerText, style: const TextStyle(color: Colors.white, fontSize: 20),),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (havePrefix)
+            const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.white,
+            ),
+          TextButton(
+            onPressed: onPressed,
+            child: Text(
+              innerText,
+              style: const TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ],
       ),
     );
   }
