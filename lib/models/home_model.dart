@@ -77,7 +77,7 @@ class ProductModel {
     description = json["description"];
     inFavorites = json["in_favorites"];
     inCart = json["in_cart"];
-    json["images"].forEach((image){
+    json["images"]?.forEach((image){
       images?.add(image);
     });
   }

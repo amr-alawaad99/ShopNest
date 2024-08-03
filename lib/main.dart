@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/cache/cache_helper.dart';
 import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/core/api/dio_consumer.dart';
@@ -38,17 +39,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(color: Constants.primaryColor),
-          scaffoldBackgroundColor: Constants.secondaryColor,
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Constants.primaryColor,
-            selectedItemColor: Constants.secondaryColor,
-          )),
-      debugShowCheckedModeBanner: false,
-      home: isSignedIn ? const LayoutScreen() : SignInScreen(),
+    return ScreenUtilInit(
+      designSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
+      builder: (context, child) =>  MaterialApp(
+        theme: ThemeData(
+            appBarTheme: AppBarTheme(color: Constants.primaryColor),
+            scaffoldBackgroundColor: Constants.secondaryColor,
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Constants.primaryColor,
+              selectedItemColor: Constants.secondaryColor,
+            )),
+        debugShowCheckedModeBanner: false,
+        home: isSignedIn ? const LayoutScreen() : SignInScreen(),
+      ),
     );
   }
 }

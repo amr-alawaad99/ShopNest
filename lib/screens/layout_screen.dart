@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopnest/cache/cache_helper.dart';
-import 'package:shopnest/core/api/end_points.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
-import 'package:shopnest/screens/home_screen.dart';
-import 'package:shopnest/screens/sign_in_screen.dart';
+import 'package:shopnest/screens/profile_screen.dart';
 
 import '../widgets/custom_input_field.dart';
+import 'home_screen.dart';
+import 'my_cart_screen.dart';
+import 'my_favorites_screen.dart';
 
 class LayoutScreen extends StatelessWidget {
   const LayoutScreen({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+    final List<Widget> bottomNavBarPages = [
+      const HomeScreen(),
+      const MyFavoritesScreen(),
+      const MyCartScreen(),
+      const ProfileScreen()
+    ];
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
-        if (state is GetUserProfileSuccessState) {
+        if (state is GetHomeDataSuccessState) {
+          context.read<MainCubit>().getMyFavorites();
+
         } else if (state is GetUserProfileFailureState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.errorMessage)));
@@ -26,7 +35,7 @@ class LayoutScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
+          appBar: context.read<MainCubit>().currentPageIndex == 0? AppBar(
             title: const CustomInputField(
               hintText: "Search",
               filled: true,
@@ -35,18 +44,17 @@ class LayoutScreen extends StatelessWidget {
             ),
             centerTitle: true,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(size.height * 0.01),
+              preferredSize: Size.fromHeight(10.h),
               child: Container(),
             ),
-          ),
-          body: const HomeScreen(),
+          ) : null,
+          body: bottomNavBarPages[context.read<MainCubit>().currentPageIndex],
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: 0,
+            currentIndex: context.read<MainCubit>().currentPageIndex,
             onTap: (value) {
-              // CacheHelper().removeData(key: ApiKey.token);
-              // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen(),), (route) => false,);
+              context.read<MainCubit>().changeBottomNavBar(value);
             },
-            items: [
+            items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 label: "Home",

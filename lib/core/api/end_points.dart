@@ -6,6 +6,8 @@ class EndPoint{
   static String profile = "profile";
   static String updateProfile = "update-profile";
   static String home = "home";
+  static String categories = "categories";
+  static String favorites = "favorites";
 }
 
 class ApiKey{

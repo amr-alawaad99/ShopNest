@@ -1,32 +1,55 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shopnest/const/constants.dart';
-import 'package:shopnest/models/home_model.dart';
+import 'package:shopnest/cubit/main_cubit.dart';
+import 'package:shopnest/models/favorites_model.dart';
+import 'package:shopnest/screens/home_screen.dart';
 import 'package:shopnest/screens/product_page_screen.dart';
 
-class HomeProductsWidget extends StatelessWidget {
-  final HomeModel homeModel;
+import '../const/constants.dart';
 
-  const HomeProductsWidget({super.key, required this.homeModel});
+class MyFavoritesScreen extends StatelessWidget {
+  const MyFavoritesScreen({super.key,});
+
 
   @override
   Widget build(BuildContext context) {
+    final List<FavoritesModel>? favoritesModel = context.read<MainCubit>().favoritesModel?.data;
     // Calculate a dynamic aspect ratio for the GridView item
     double itemHeight = 305.h; // by try and error
     double itemWidth = (1.sw-24.w)/2; // screen width - the 3 paddings (8.w * 3) divided by 2 (2 items per column)
-    return GridView.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 10.h,
-      crossAxisSpacing: 8.w,
-      childAspectRatio: itemWidth/itemHeight, // the calculated ratio
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: homeModel.homeData!.products
-          .map(
-            (e) => GestureDetector(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Favorite products", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.h),
+          child: Container(),
+        ),
+      ),
+      body: favoritesModel == null? const Center(child: CircularProgressIndicator()) :
+      FutureBuilder(
+        future: context.read<MainCubit>().getMyFavorites(),
+        initialData: const Center(child: CircularProgressIndicator()),
+        builder: (context, snapshot) {
+          print(snapshot);
+          return GridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 10.h,
+            crossAxisSpacing: 8.w,
+            childAspectRatio: itemWidth/itemHeight, // the calculated ratio
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: favoritesModel.map((e) => GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductPageScreen(productModel: e),));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductPageScreen(
+                  /* Here I return a clone of the favorite product from the homeModel products data
+                    by comparing the id of the item (cause favorite DB doesn't have product images :) */
+                    productModel: context.read<MainCubit>().homeModel!.homeData!.products
+                        .singleWhere((element) {return element.id == e.favProductModel!.id;},)),),
+                );
               },
               child: Column(
                 children: [
@@ -39,7 +62,7 @@ class HomeProductsWidget extends StatelessWidget {
                         height: 200.h,
                         color: Colors.white,
                         child: Image(
-                          image: NetworkImage(e.image!),
+                          image: NetworkImage(e.favProductModel!.image!),
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -58,14 +81,14 @@ class HomeProductsWidget extends StatelessWidget {
                       ),
 
                       /// Discount Container
-                      if (e.discount!=0)
+                      if (e.favProductModel!.discount!=0)
                         Positioned(
                           left: 0,
                           bottom: 0,
                           child: Container(
                             color: Colors.red,
                             child: Text(
-                              " ${e.discount}% off ",
+                              " ${e.favProductModel!.discount}% off ",
                               style: const TextStyle(color: Colors.white),
                             ),
                           ),
@@ -74,7 +97,7 @@ class HomeProductsWidget extends StatelessWidget {
                   ),
                   /// Product Name
                   Text(
-                    e.name!,
+                    e.favProductModel!.name!,
                     style: TextStyle(
                       fontSize: 19.sp,
                     ),
@@ -97,7 +120,7 @@ class HomeProductsWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        e.price.toString(),
+                        e.favProductModel!.price.toString(),
                         style: TextStyle(
                           fontSize: 19.sp,
                         ),
@@ -108,7 +131,7 @@ class HomeProductsWidget extends StatelessWidget {
                     ],
                   ),
                   /// Product Old price (if there's a discount)
-                  if (e.discount!=0)
+                  if (e.favProductModel!.discount!=0)
                     Row(
                       children: [
                         Text(
@@ -121,7 +144,7 @@ class HomeProductsWidget extends StatelessWidget {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          "EGP ${e.oldPrice.toString()}",
+                          "EGP ${e.favProductModel!.oldPrice.toString()}",
                           style: TextStyle(
                             fontSize: 15.sp,
                             decoration: TextDecoration.lineThrough,
@@ -135,8 +158,11 @@ class HomeProductsWidget extends StatelessWidget {
                 ],
               ),
             ),
-          )
-          .toList(),
+            )
+                .toList(),
+          );
+        },
+      ),
     );
   }
 }

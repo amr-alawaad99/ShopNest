@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/const/constants.dart';
 
 class CustomInputField extends StatefulWidget {
@@ -14,7 +15,7 @@ class CustomInputField extends StatefulWidget {
   final String? Function(String?)? validator;
 
   const CustomInputField({
-    Key? key,
+    super.key,
     required this.hintText,
     this.labelText,
     this.suffixIcon = false,
@@ -25,7 +26,7 @@ class CustomInputField extends StatefulWidget {
     this.filled = false,
     this.haveBorder = false,
     this.prefixIcon = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomInputField> createState() => _CustomInputFieldState();
@@ -36,9 +37,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SizedBox(
-      width: size.width * 0.9,
+      width: 0.9.sw,
       child: Column(
         children: [
           Align(
@@ -47,7 +47,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 ? Text(
                     widget.labelText!,
                     style: TextStyle(
-                        fontSize: size.aspectRatio * 50,
+                        fontSize: 25.sp,
                         fontWeight: FontWeight.bold),
                   )
                 : null,
@@ -59,7 +59,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
               border: widget.haveBorder
                   ? OutlineInputBorder(
                       borderRadius:
-                          BorderRadius.circular(size.aspectRatio * 20))
+                          BorderRadius.circular(25.sp))
                   : null,
               fillColor: Constants.secondaryColor,
               isDense: (widget.isDense != null) ? widget.isDense : false,

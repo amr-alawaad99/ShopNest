@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   final String innerText;
@@ -7,35 +8,40 @@ class CustomButton extends StatelessWidget {
   final double borderRadius;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.innerText,
     required this.onPressed,
     this.havePrefix = false,
     this.borderRadius = 26,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * 0.8,
+      width: 1.sw - 35.w,
       decoration: BoxDecoration(
         color: const Color(0xff233743),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (havePrefix)
-            const Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.white,
-            ),
-          TextButton(
-            onPressed: onPressed,
-            child: Text(
-              innerText,
-              style: const TextStyle(color: Colors.white, fontSize: 20),
+          Expanded(
+            child: TextButton(
+              onPressed: onPressed,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (havePrefix)
+                    const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Colors.white,
+                    ),
+                  Text(
+                    innerText,
+                    style: TextStyle(color: Colors.white, fontSize: 20.sp),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

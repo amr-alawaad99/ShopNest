@@ -43,6 +43,7 @@ final class GetUserProfileFailureState extends MainState {
   GetUserProfileFailureState({required this.errorMessage});
 }
 
+/// Get home screen data states
 final class GetHomeDataLoadingState extends MainState {}
 
 final class GetHomeDataSuccessState extends MainState {}
@@ -50,4 +51,16 @@ final class GetHomeDataSuccessState extends MainState {}
 final class GetHomeDataFailureState extends MainState {
   final String errorMessage;
   GetHomeDataFailureState({required this.errorMessage});
+}
+
+
+
+/// Get my favorites screen data states
+final class GetMyFavoritesDataLoadingState extends MainState {}
+
+final class GetMyFavoritesDataSuccessState extends MainState {}
+
+final class GetMyFavoritesDataFailureState extends MainState {
+  final String errorMessage;
+  GetMyFavoritesDataFailureState({required this.errorMessage});
 }

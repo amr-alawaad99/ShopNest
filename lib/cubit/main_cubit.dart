@@ -1,10 +1,17 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopnest/cache/cache_helper.dart';
 import 'package:shopnest/core/api/api_consumer.dart';
 import 'package:shopnest/core/api/end_points.dart';
 import 'package:shopnest/core/error/exceptions.dart';
+import 'package:shopnest/models/favorites_model.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/models/user_model.dart';
+import 'package:shopnest/screens/my_cart_screen.dart';
+import 'package:shopnest/screens/home_screen.dart';
+import 'package:shopnest/screens/my_favorites_screen.dart';
+import 'package:shopnest/screens/profile_screen.dart';
 import 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
@@ -72,8 +79,15 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
-  UserModel? userModel;
+  int currentPageIndex = 0;
+  /// change bottom nav bar
+  changeBottomNavBar(int value){
+    currentPageIndex = value;
+    emit(MainInitState());
+  }
 
+
+  UserModel? userModel;
   /// Get User Data
   getUserProfile() async {
     emit(GetUserProfileLoadingState());
@@ -98,6 +112,31 @@ class MainCubit extends Cubit<MainState> {
       emit(GetHomeDataSuccessState());
     } on ServerException catch (e) {
       emit(GetHomeDataFailureState(errorMessage: e.errorModel.errorMessage));
+    }
+  }
+
+  // /// Get Categories data
+  // getCategories() async {
+  //   try {
+  //     final response = await api.get(EndPoint.categories);
+  //     print(response["data"]["data"]);
+  //   } on ServerException catch (e) {
+  //
+  //     print("error");
+  //   }
+  // }
+
+  FavoritesData? favoritesModel;
+  ///Get Home Page Data
+  getMyFavorites() async {
+    try {
+      emit(GetMyFavoritesDataLoadingState());
+      final response = await api.get(EndPoint.favorites);
+      favoritesModel = FavoritesData.fromJson(response["data"]);
+      print(favoritesModel?.data[0].favProductModel?.id);
+      emit(GetMyFavoritesDataSuccessState());
+    } on ServerException catch (e) {
+      emit(GetMyFavoritesDataFailureState(errorMessage: e.errorModel.errorMessage));
     }
   }
 }
