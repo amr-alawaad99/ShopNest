@@ -26,7 +26,7 @@ class LayoutScreen extends StatelessWidget {
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
         if (state is GetHomeDataSuccessState) {
-          context.read<MainCubit>().getMyFavorites();
+
 
         } else if (state is GetUserProfileFailureState) {
           ScaffoldMessenger.of(context)

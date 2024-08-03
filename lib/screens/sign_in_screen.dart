@@ -21,8 +21,6 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("sp: ${ScreenUtil().scaleText}");
-
     return SafeArea(
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) async {
@@ -32,8 +30,7 @@ class SignInScreen extends StatelessWidget {
           } else if (state is SignInSuccessState && state.state) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)));
-            await context.read<MainCubit>().getUserProfile();
-            context.read<MainCubit>().getHomeData();
+            context.read<MainCubit>().getUserProfile();
             Navigator.pushAndRemoveUntil(
               context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (
                 route) => false,);

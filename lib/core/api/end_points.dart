@@ -8,6 +8,7 @@ class EndPoint{
   static String home = "home";
   static String categories = "categories";
   static String favorites = "favorites";
+  static String cart = "carts";
 }
 
 class ApiKey{

@@ -64,3 +64,13 @@ final class GetMyFavoritesDataFailureState extends MainState {
   final String errorMessage;
   GetMyFavoritesDataFailureState({required this.errorMessage});
 }
+
+/// Get my cart screen data states
+final class GetMyCartDataLoadingState extends MainState {}
+
+final class GetMyCartDataSuccessState extends MainState {}
+
+final class GetMyCartDataFailureState extends MainState {
+  final String errorMessage;
+  GetMyCartDataFailureState({required this.errorMessage});
+}

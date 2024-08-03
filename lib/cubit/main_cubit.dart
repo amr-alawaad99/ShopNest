@@ -5,6 +5,7 @@ import 'package:shopnest/cache/cache_helper.dart';
 import 'package:shopnest/core/api/api_consumer.dart';
 import 'package:shopnest/core/api/end_points.dart';
 import 'package:shopnest/core/error/exceptions.dart';
+import 'package:shopnest/models/cart_model.dart';
 import 'package:shopnest/models/favorites_model.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/models/user_model.dart';
@@ -104,15 +105,17 @@ class MainCubit extends Cubit<MainState> {
 
   HomeModel? homeModel;
   ///Get Home Page Data
-  getHomeData() async {
+  Future<HomeModel?> getHomeData() async {
     try {
       emit(GetHomeDataLoadingState());
       final response = await api.get(EndPoint.home);
       homeModel = HomeModel.fromJson(response);
       emit(GetHomeDataSuccessState());
+      return homeModel;
     } on ServerException catch (e) {
       emit(GetHomeDataFailureState(errorMessage: e.errorModel.errorMessage));
     }
+    return null;
   }
 
   // /// Get Categories data
@@ -128,15 +131,33 @@ class MainCubit extends Cubit<MainState> {
 
   FavoritesData? favoritesModel;
   ///Get Home Page Data
-  getMyFavorites() async {
+  Future<FavoritesData?> getMyFavorites() async {
+      try {
+        emit(GetMyFavoritesDataLoadingState());
+        final response = await api.get(EndPoint.favorites);
+        favoritesModel = FavoritesData.fromJson(response["data"]);
+        emit(GetMyFavoritesDataSuccessState());
+        return favoritesModel;
+      } on ServerException catch (e) {
+        emit(GetMyFavoritesDataFailureState(errorMessage: e.errorModel.errorMessage));
+      }
+      return null;
+  }
+
+  CartModel? cartModel;
+  ///Get Home Page Data
+  Future<FavoritesData?> getMyCart() async {
     try {
-      emit(GetMyFavoritesDataLoadingState());
-      final response = await api.get(EndPoint.favorites);
-      favoritesModel = FavoritesData.fromJson(response["data"]);
-      print(favoritesModel?.data[0].favProductModel?.id);
-      emit(GetMyFavoritesDataSuccessState());
+      emit(GetMyCartDataLoadingState());
+      final response = await api.get(EndPoint.cart);
+      cartModel = CartModel.fromJson(response["data"]);
+      print(response["data"]);
+      print(cartModel?.cartItemModel[0].cartProducts[0].name);
+      emit(GetMyCartDataSuccessState());
+      return favoritesModel;
     } on ServerException catch (e) {
-      emit(GetMyFavoritesDataFailureState(errorMessage: e.errorModel.errorMessage));
+      emit(GetMyCartDataFailureState(errorMessage: e.errorModel.errorMessage));
     }
+    return null;
   }
 }

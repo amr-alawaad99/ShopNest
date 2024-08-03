@@ -5,9 +5,9 @@ import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/screens/product_page_screen.dart';
 
 class HomeProductsWidget extends StatelessWidget {
-  final HomeModel homeModel;
+  final List<ProductModel> productModel;
 
-  const HomeProductsWidget({super.key, required this.homeModel});
+  const HomeProductsWidget({super.key, required this.productModel});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class HomeProductsWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      children: homeModel.homeData!.products
+      children: productModel
           .map(
             (e) => GestureDetector(
               onTap: () {

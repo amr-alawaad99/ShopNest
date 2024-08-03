@@ -23,9 +23,7 @@ Future<void> main() async {
   }
   runApp(
     BlocProvider(
-      create: (context) => isSignedIn
-          ? (MainCubit(DioConsumer(dio: Dio()))..getHomeData())
-          : MainCubit(DioConsumer(dio: Dio())),
+      create: (context) => MainCubit(DioConsumer(dio: Dio())),
       child: MyApp(isSignedIn),
     ),
   );
