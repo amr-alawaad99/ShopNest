@@ -21,4 +21,5 @@ class ApiKey{
   static String token = "token";
   static String id = "id";
   static String profilePic = "image";
+  static String productId = "product_id";
 }

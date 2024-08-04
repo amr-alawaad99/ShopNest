@@ -17,16 +17,14 @@ class CartModel{
 class CartItemsModel{
   int? id;
   int? quantity;
-  List<ProductModel> cartProducts = [];
+  ProductModel? cartProduct;
 
-  CartItemsModel(this.id, this.quantity, this.cartProducts);
+  CartItemsModel(this.id, this.quantity, this.cartProduct);
 
   CartItemsModel.fromJson(Map<String, dynamic> json){
     id = json["id"];
     quantity = json["quantity"];
-    json["product"].forEach((element){
-      cartProducts.add(ProductModel.fromJson(element));
-    });
+    cartProduct = ProductModel.fromJson(json["product"]) ;
   }
 
   

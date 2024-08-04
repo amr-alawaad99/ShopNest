@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/const/constants.dart';
+import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/screens/product_page_screen.dart';
+import 'package:shopnest/widgets/shake_Icon_button_widget.dart';
 
 class HomeProductsWidget extends StatelessWidget {
   final List<ProductModel> productModel;
@@ -46,13 +49,23 @@ class HomeProductsWidget extends StatelessWidget {
 
                       /// Favorite Icon Button
                       Positioned(
-                        right: 0,
-                        top: 0,
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.favorite_outline,
-                            color: Constants.primaryColor,
+                        right: 5.sp,
+                        top: 5.sp,
+                        child: Container(
+                          width: 40.sp,
+                          height: 40.sp,
+                          decoration: BoxDecoration(
+                              color: Constants.secondaryColor.withOpacity(0.5),
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: ShakeIconButton(
+                            onPressed: () {
+                              context.read<MainCubit>().addXdeleteFavorite(e.id!);
+                            },
+                            icon: Icon(
+                              e.inFavorites!? Icons.favorite : Icons.favorite_border,
+                              color: Constants.primaryColor,
+                            ),
                           ),
                         ),
                       ),

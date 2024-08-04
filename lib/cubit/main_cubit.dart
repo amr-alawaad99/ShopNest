@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopnest/cache/cache_helper.dart';
 import 'package:shopnest/core/api/api_consumer.dart';
@@ -9,10 +7,6 @@ import 'package:shopnest/models/cart_model.dart';
 import 'package:shopnest/models/favorites_model.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/models/user_model.dart';
-import 'package:shopnest/screens/my_cart_screen.dart';
-import 'package:shopnest/screens/home_screen.dart';
-import 'package:shopnest/screens/my_favorites_screen.dart';
-import 'package:shopnest/screens/profile_screen.dart';
 import 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
@@ -84,7 +78,7 @@ class MainCubit extends Cubit<MainState> {
   /// change bottom nav bar
   changeBottomNavBar(int value){
     currentPageIndex = value;
-    emit(MainInitState());
+    emit(BottomNavBarChangeState());
   }
 
 
@@ -146,18 +140,30 @@ class MainCubit extends Cubit<MainState> {
 
   CartModel? cartModel;
   ///Get Home Page Data
-  Future<FavoritesData?> getMyCart() async {
+  Future<CartModel?> getMyCart() async {
     try {
       emit(GetMyCartDataLoadingState());
       final response = await api.get(EndPoint.cart);
       cartModel = CartModel.fromJson(response["data"]);
-      print(response["data"]);
-      print(cartModel?.cartItemModel[0].cartProducts[0].name);
       emit(GetMyCartDataSuccessState());
-      return favoritesModel;
+      return cartModel;
     } on ServerException catch (e) {
       emit(GetMyCartDataFailureState(errorMessage: e.errorModel.errorMessage));
     }
     return null;
+  }
+
+  addXdeleteFavorite(int productId) async {
+      await api.post(EndPoint.favorites, data: {
+        ApiKey.productId : productId,
+      });
+      emit(AddedxDeletedFavoriteItemState());
+  }
+
+  addXdeleteCart(int productId) async {
+    await api.post(EndPoint.cart, data: {
+      ApiKey.productId : productId,
+    });
+    emit(AddedxDeletedCartItemState());
   }
 }

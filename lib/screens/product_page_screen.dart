@@ -256,12 +256,6 @@ class ProductPageScreen extends StatelessWidget {
                         fontSize: 20.sp,
                         height: 3.h),
                   ),
-                  Text(
-                    "123456789-123456789-123456789-123456789-123456789-123456789",
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        height: 3.h),
-                  ),
                   SizedBox(
                     height: 20.h,
                   ),
