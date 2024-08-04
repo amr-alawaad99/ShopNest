@@ -153,11 +153,17 @@ class MainCubit extends Cubit<MainState> {
     return null;
   }
 
-  addXdeleteFavorite(int productId) async {
+  addXdeleteFavorite(int productId, ProductModel m) async {
       await api.post(EndPoint.favorites, data: {
         ApiKey.productId : productId,
-      });
+      }).then((value) {
+        m.inFavorites = !m.inFavorites!;
+      },);
       emit(AddedxDeletedFavoriteItemState());
+  }
+  addXdeleteFavorite2() async {
+    Future.delayed(Duration(seconds: 2), () => emit(AddedxDeletedFavoriteItemState()),);
+
   }
 
   addXdeleteCart(int productId) async {
