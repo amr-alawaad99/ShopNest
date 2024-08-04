@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopnest/const/constants.dart';
 
 class CustomButton extends StatelessWidget {
   final String innerText;
@@ -20,7 +21,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       width: 1.sw - 35.w,
       decoration: BoxDecoration(
-        color: const Color(0xff233743),
+        color: Constants.secondaryColor,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Row(

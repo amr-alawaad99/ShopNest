@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
+import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/widgets/home_products_widget.dart';
 import '../models/home_model.dart';
 import '../widgets/banner_widget.dart';
@@ -21,7 +22,9 @@ class HomeScreen extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasData) {
-          return SingleChildScrollView(
+          return BlocBuilder<MainCubit, MainState>(
+  builder: (context, state) {
+    return SingleChildScrollView(
             child: Column(
               children: [
                 BannerWidget(homeModel: snapshot.data!),
@@ -38,6 +41,8 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           );
+  },
+);
         } else if (snapshot.hasError) {
           return Center(
               child: Text("Error Getting data: ${snapshot.error}"));

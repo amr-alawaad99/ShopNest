@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
 
@@ -25,18 +26,12 @@ class SignInScreen extends StatelessWidget {
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) async {
           if (state is SignInSuccessState && !state.state) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is SignInSuccessState && state.state) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)));
-            context.read<MainCubit>().getUserProfile();
-            Navigator.pushAndRemoveUntil(
-              context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (
-                route) => false,);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (route) => false,);
           } else if (state is SignInFailureState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.errorMessage)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
           }
         },
         builder: (context, state) {
@@ -94,7 +89,7 @@ class SignInScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {},
-                          child: const Text("Forgot password?"),
+                          child: Text("Forgot password?", style: TextStyle(color: Constants.secondaryColor),),
                         ),
                       ),
                       SizedBox(
@@ -103,7 +98,7 @@ class SignInScreen extends StatelessWidget {
 
                       /// Sign-in button
                       state is SignInLoadingState
-                          ? const CircularProgressIndicator()
+                          ? CircularProgressIndicator(color: Constants.secondaryColor,)
                           : CustomButton(
                         onPressed: () {
                           context.read<MainCubit>().signIn(email: emailController
@@ -123,9 +118,9 @@ class SignInScreen extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => SignUpScreen(),));
+                                builder: (context) => const SignUpScreen(),));
                             },
-                            child: const Text('Sign-up'),),
+                            child: Text('Sign-up', style: TextStyle(color: Constants.secondaryColor),),),
                         ],
                       ),
                       SizedBox(

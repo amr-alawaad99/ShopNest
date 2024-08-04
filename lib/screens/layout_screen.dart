@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
-import 'package:shopnest/screens/profile_screen.dart';
+import 'package:shopnest/screens/account_settings_screen.dart';
 
 import '../widgets/custom_input_field.dart';
 import 'home_screen.dart';
@@ -21,7 +21,7 @@ class LayoutScreen extends StatelessWidget {
       const HomeScreen(),
       const MyFavoritesScreen(),
       const MyCartScreen(),
-      const ProfileScreen()
+      const AccountSettingsScreen()
     ];
     return BlocConsumer<MainCubit, MainState>(
       listener: (context, state) {
@@ -54,17 +54,41 @@ class LayoutScreen extends StatelessWidget {
             onTap: (value) {
               context.read<MainCubit>().changeBottomNavBar(value);
             },
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 label: "Home",
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.favorite_border), label: "Favorite"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_bag_outlined), label: "Cart"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person_2_outlined), label: "You"),
+                  icon: SizedBox(
+                    width: 50.w,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const Icon(Icons.shopping_bag_outlined),
+                        if(context.read<MainCubit>().itemsInCart != 0)
+                        Positioned(
+                          left: 5.sp,
+                          top: 0,
+                          child: Container(
+                            width: 20.sp,
+                            height: 20.sp,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(25.sp),
+                            ),
+                            child: Text(context.read<MainCubit>().itemsInCart.toString(), style: const TextStyle(color: Colors.white),),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                  , label: "Cart"),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.person_2_outlined), label: "Account"),
             ],
           ),
         );

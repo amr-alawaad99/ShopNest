@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/cubit/main_state.dart';
 
 import 'package:shopnest/screens/sign_in_screen.dart';
@@ -9,6 +10,7 @@ import 'package:shopnest/screens/sign_in_screen.dart';
 import '../cubit/main_cubit.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input_field.dart';
+import 'layout_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static final TextEditingController nameController = TextEditingController();
@@ -27,9 +29,12 @@ class SignUpScreen extends StatelessWidget {
     return SafeArea(
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
-          if(state is SignUpSuccessState){
+          if (state is SignUpSuccessState && !state.state) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if(state is SignUpFailureState){
+          } else if (state is SignUpSuccessState && state.state) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (route) => false,);
+          } else if (state is SignUpFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
           }
         },
@@ -151,7 +156,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
 
                       /// Sign-up Button
-                      state is SignUpLoadingState? const CircularProgressIndicator() : CustomButton(
+                      state is SignUpLoadingState? CircularProgressIndicator(color: Constants.secondaryColor,) : CustomButton(
                         innerText: 'Sign-up',
                         onPressed: () {
                           context.read<MainCubit>().signUp(
@@ -176,7 +181,7 @@ class SignUpScreen extends StatelessWidget {
                           TextButton(
                               onPressed: () {
                                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SignInScreen(),), (route) => false,);
-                              }, child: const Text("Sign-in"),),
+                              }, child: Text("Sign-in", style: TextStyle(color: Constants.secondaryColor),),),
                         ],
                       ),
                     ],

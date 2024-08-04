@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shopnest/const/constants.dart';
 
 class CustomInputField extends StatefulWidget {
   final String hintText;
@@ -13,6 +12,7 @@ class CustomInputField extends StatefulWidget {
   final bool prefixIcon;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final bool enabled;
 
   const CustomInputField({
     super.key,
@@ -26,6 +26,7 @@ class CustomInputField extends StatefulWidget {
     this.filled = false,
     this.haveBorder = false,
     this.prefixIcon = false,
+    this.enabled = true,
   });
 
   @override
@@ -54,14 +55,13 @@ class _CustomInputFieldState extends State<CustomInputField> {
           ),
           TextFormField(
             obscureText: (widget.obscureText && _obscureText),
+            enabled: widget.enabled,
             decoration: InputDecoration(
               filled: widget.filled,
               border: widget.haveBorder
-                  ? OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(25.sp))
+                  ? OutlineInputBorder(borderRadius: BorderRadius.circular(10.sp), borderSide: BorderSide.none)
                   : null,
-              fillColor: Constants.secondaryColor,
+              fillColor: Colors.white,
               isDense: (widget.isDense != null) ? widget.isDense : false,
               hintText: widget.hintText,
               suffixIcon: widget.suffixIcon

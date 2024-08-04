@@ -3,30 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
-import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/screens/product_page_screen.dart';
 import 'package:shopnest/widgets/shake_Icon_button_widget.dart';
 
 class HomeProductsWidget extends StatelessWidget {
   final List<ProductModel> productModel;
+  final bool isScrollable;
 
-  const HomeProductsWidget({super.key, required this.productModel});
+  const HomeProductsWidget({super.key, required this.productModel, this.isScrollable = false});
 
   @override
   Widget build(BuildContext context) {
     // Calculate a dynamic aspect ratio for the GridView item
     double itemHeight = 305.h; // by try and error
     double itemWidth = (1.sw-24.w)/2; // screen width - the 3 paddings (8.w * 3) divided by 2 (2 items per column)
-    return BlocBuilder<MainCubit,MainState>(
-      builder: (context, state) =>  GridView.count(
+    return GridView.count(
         crossAxisCount: 2,
         mainAxisSpacing: 10.h,
         crossAxisSpacing: 8.w,
         childAspectRatio: itemWidth/itemHeight, // the calculated ratio
         padding: EdgeInsets.symmetric(horizontal: 8.w),
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        physics: isScrollable? const ScrollPhysics()  : const NeverScrollableScrollPhysics(),
         children: productModel
             .map(
               (e) => GestureDetector(
@@ -57,7 +56,7 @@ class HomeProductsWidget extends StatelessWidget {
                             width: 40.sp,
                             height: 40.sp,
                             decoration: BoxDecoration(
-                                color: Constants.secondaryColor.withOpacity(0.5),
+                                color: Constants.primaryColor,
                                 border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(5)),
                             child: ShakeIconButton(
@@ -66,7 +65,7 @@ class HomeProductsWidget extends StatelessWidget {
                                 },
                               icon: Icon(
                                 e.inFavorites!? Icons.favorite : Icons.favorite_border,
-                                color: Constants.primaryColor,
+                                color: Constants.secondaryColor,
                               ),
                             ),
                           ),
@@ -152,7 +151,6 @@ class HomeProductsWidget extends StatelessWidget {
               ),
             )
             .toList(),
-      ),
-    );
+      );
   }
 }

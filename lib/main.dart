@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) =>  MaterialApp(
         theme: ThemeData(
             appBarTheme: AppBarTheme(color: Constants.primaryColor),
-            scaffoldBackgroundColor: Constants.secondaryColor,
+            scaffoldBackgroundColor: Constants.primaryColor,
             bottomNavigationBarTheme: BottomNavigationBarThemeData(
               type: BottomNavigationBarType.fixed,
               backgroundColor: Constants.primaryColor,

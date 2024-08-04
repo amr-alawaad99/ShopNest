@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/const/constants.dart';
+import 'package:shopnest/cubit/main_cubit.dart';
+import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/models/home_model.dart';
 import 'package:shopnest/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/custom_input_field.dart';
+import '../widgets/shake_Icon_button_widget.dart';
 
 class ProductPageScreen extends StatelessWidget {
   final ProductModel productModel;
@@ -22,9 +26,9 @@ class ProductPageScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             CupertinoIcons.back,
-            color: Colors.white,
+            color: Constants.secondaryColor,
           ),
         ),
         title: const CustomInputField(
@@ -39,7 +43,9 @@ class ProductPageScreen extends StatelessWidget {
           child: Container(),
         ),
       ),
-      body: SingleChildScrollView(
+      body: BlocBuilder<MainCubit, MainState>(
+  builder: (context, state) {
+    return SingleChildScrollView(
         child: Column(
           children: [
             /// Images Slider (PageView) and Favorite button
@@ -65,12 +71,17 @@ class ProductPageScreen extends StatelessWidget {
                     width: 50.sp,
                     height: 50.sp,
                     decoration: BoxDecoration(
-                        color: Constants.secondaryColor,
+                        color: Constants.primaryColor,
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(5)),
-                    child: Icon(
-                      Icons.favorite_border,
-                      color: Constants.primaryColor,
+                    child: ShakeIconButton(
+                      onPressed: () {
+                        context.read<MainCubit>().addXdeleteFavorite(productModel.id!, productModel);
+                      },
+                      icon: Icon(
+                        productModel.inFavorites!? Icons.favorite : Icons.favorite_border,
+                        color: Constants.secondaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -83,7 +94,7 @@ class ProductPageScreen extends StatelessWidget {
             /// Images Page Indicator
             SmoothPageIndicator(
               effect: ScaleEffect(
-                activeDotColor: Constants.primaryColor,
+                activeDotColor: Constants.secondaryColor,
                 dotHeight: 10.sp,
                 dotWidth: 10.sp,
               ),
@@ -207,10 +218,18 @@ class ProductPageScreen extends StatelessWidget {
 
                   /// Add to cart button
                   CustomButton(
-                    innerText: "Add to cart",
-                    havePrefix: true,
+                    innerText: productModel.inCart!? "In cart" : "Add to cart",
+                    havePrefix: productModel.inCart!? false : true,
                     borderRadius: 10,
-                    onPressed: () {},
+                    onPressed: () {
+                      if(productModel.inCart!){
+                        context.read<MainCubit>().changeBottomNavBar(2);
+                        Navigator.pop(context);
+                      } else {
+                        context.read<MainCubit>().itemsInCart++;
+                        context.read<MainCubit>().addXdeleteCart(productModel.id!, productModel);
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 25.h,
@@ -240,6 +259,7 @@ class ProductPageScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 20.h,
+                    width: double.infinity,
                   ),
                   Text(
                     "About product",
@@ -253,7 +273,7 @@ class ProductPageScreen extends StatelessWidget {
                   Text(
                     productModel.description!,
                     style: TextStyle(
-                        fontSize: 20.sp,
+                        fontSize: 18.sp,
                         height: 3.h),
                   ),
                   SizedBox(
@@ -276,7 +296,9 @@ class ProductPageScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      );
+  },
+),
     );
   }
 }
