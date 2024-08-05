@@ -278,7 +278,7 @@ class CartProductsWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text("EGP ${productModel.fold(0.0, (subtotal, product) {return subtotal + (product.price ?? 0.0);})}",
+                  Text("EGP ${productModel.fold(0.0, (subtotal, product) {return subtotal + (product.price ?? 0.0);}).toStringAsFixed(2)}",
                   style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
                   ),
                 ],

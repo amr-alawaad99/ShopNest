@@ -289,7 +289,7 @@ class CheckOutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "EGP $totalPrice",
+                            "EGP ${totalPrice.toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontSize: 20.sp, fontWeight: FontWeight.bold),
                           )
