@@ -183,5 +183,8 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
+  updateState(){
+    emit(MainInitState());
+  }
 
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/screens/account_settings_screen.dart';
+import 'package:shopnest/screens/search_screen.dart';
 
 import '../widgets/custom_input_field.dart';
 import 'home_screen.dart';
@@ -36,12 +37,16 @@ class LayoutScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: context.read<MainCubit>().currentPageIndex == 0? AppBar(
-            title: const CustomInputField(
-              hintText: "Search",
-              filled: true,
-              haveBorder: true,
-              prefixIcon: true,
-              isDense: true,
+            title: GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(homeModel: context.read<MainCubit>().homeModel!),)),
+              child: const CustomInputField(
+                hintText: "Search",
+                filled: true,
+                haveBorder: true,
+                prefixIcon: true,
+                isDense: true,
+                enabled: false,
+              ),
             ),
             centerTitle: true,
             bottom: PreferredSize(

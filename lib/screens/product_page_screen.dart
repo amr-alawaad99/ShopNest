@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +5,7 @@ import 'package:shopnest/const/constants.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/cubit/main_state.dart';
 import 'package:shopnest/models/home_model.dart';
+import 'package:shopnest/screens/search_screen.dart';
 import 'package:shopnest/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -27,16 +27,20 @@ class ProductPageScreen extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: Icon(
-            CupertinoIcons.back,
+            Icons.arrow_back_ios,
             color: Constants.secondaryColor,
           ),
         ),
-        title: const CustomInputField(
-          hintText: "Search",
-          filled: true,
-          haveBorder: true,
-          prefixIcon: true,
-          isDense: true,
+        title: GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(homeModel: context.read<MainCubit>().homeModel!),)),
+          child: const CustomInputField(
+            hintText: "Search",
+            filled: true,
+            haveBorder: true,
+            prefixIcon: true,
+            isDense: true,
+            enabled: false,
+          ),
         ),
         centerTitle: true,
         bottom: PreferredSize(

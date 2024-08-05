@@ -24,7 +24,7 @@ class CartProductsWidget extends StatelessWidget {
     double itemHeight = 200.h; // by try and error
     double itemWidth = 1.sw -
         16.w; // screen width - the 3 paddings (8.w * 3) divided by 2 (2 items per column)
-    return Scaffold(
+    return productModel.isEmpty? Container() : Scaffold(
       body: Padding(
         padding: EdgeInsets.only(bottom: 110.h),
         child: GridView.count(

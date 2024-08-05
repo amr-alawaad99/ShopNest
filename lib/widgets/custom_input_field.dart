@@ -13,6 +13,9 @@ class CustomInputField extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final bool enabled;
+  final Function(String)? onChanged;
+  final Function(String)? onFieldSubmitted;
+  final TextInputAction? textInputAction;
 
   const CustomInputField({
     super.key,
@@ -27,6 +30,9 @@ class CustomInputField extends StatefulWidget {
     this.haveBorder = false,
     this.prefixIcon = false,
     this.enabled = true,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.textInputAction,
   });
 
   @override
@@ -56,6 +62,9 @@ class _CustomInputFieldState extends State<CustomInputField> {
           TextFormField(
             obscureText: (widget.obscureText && _obscureText),
             enabled: widget.enabled,
+            onChanged: widget.onChanged,
+            onFieldSubmitted: widget.onFieldSubmitted,
+            textInputAction: widget.textInputAction,
             decoration: InputDecoration(
               filled: widget.filled,
               border: widget.haveBorder
