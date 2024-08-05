@@ -75,6 +75,7 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
+  /// Logout
   logout(){
     CacheHelper().removeData(key: ApiKey.token);
     homeModel = null;
@@ -107,6 +108,28 @@ class MainCubit extends Cubit<MainState> {
       return null;
     }
   }
+  
+//   updateUserData({
+//     required String name,
+//     required String email,
+//     required String phoneNumber,
+// }) async {
+//     try {
+//       emit(UpdateUserProfileLoadingState());
+//       final response = await api.put(EndPoint.updateProfile, data: {
+//         ApiKey.name : name,
+//         ApiKey.email : email,
+//         ApiKey.phoneNumber : phoneNumber,
+//       });
+//       userModel!.name = name;
+//       userModel!.email = email;
+//       userModel!.phone = phoneNumber;
+//
+//       emit(UpdateUserProfileSuccessState(status: response["status"], message: response["message"]));
+//     } on ServerException catch (e) {
+//       emit(UpdateUserProfileFailureState(errorMessage: e.errorModel.errorMessage));
+//     }
+// }
 
   HomeModel? homeModel;
   ///Get Home Page Data
@@ -128,7 +151,8 @@ class MainCubit extends Cubit<MainState> {
   addXdeleteFavorite(int productId, ProductModel p) async {
       await api.post(EndPoint.favorites, data: {
         ApiKey.productId : productId,
-      }).then((value) => p.inFavorites = !p.inFavorites!,);
+      });
+      p.inFavorites = !p.inFavorites!;
       emit(AddedxDeletedFavoriteItemState());
   }
 
@@ -136,7 +160,28 @@ class MainCubit extends Cubit<MainState> {
   addXdeleteCart(int productId, ProductModel p) async {
     await api.post(EndPoint.cart, data: {
       ApiKey.productId : productId,
-    }).then((value) => p.inCart = !p.inCart!,);
+    });
+    p.inCart = !p.inCart!;
     emit(AddedxDeletedCartItemState());
   }
+
+  /// Remove all items in your Cart
+  removeAllItemsInCart(List<int> productsId) async {
+    try {
+      emit(RemoveAllCartItemsLoadingState());
+      for (int itemId in productsId) {
+        print(itemId);
+        await api.post(EndPoint.cart, data: {
+          ApiKey.productId : itemId,
+        });
+      }
+      currentPageIndex = 0;
+      await getHomeData();
+      emit(RemoveAllCartItemsSuccessState());
+    } on ServerException catch (e) {
+      emit(RemoveAllCartItemsFailureState(errorMessage: e.errorModel.errorMessage));
+    }
+  }
+
+
 }

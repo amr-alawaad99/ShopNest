@@ -41,6 +41,7 @@ class LayoutScreen extends StatelessWidget {
               filled: true,
               haveBorder: true,
               prefixIcon: true,
+              isDense: true,
             ),
             centerTitle: true,
             bottom: PreferredSize(

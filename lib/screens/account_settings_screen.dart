@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shopnest/cache/cache_helper.dart';
 import 'package:shopnest/const/constants.dart';
-import 'package:shopnest/core/api/end_points.dart';
 import 'package:shopnest/cubit/main_cubit.dart';
 import 'package:shopnest/models/user_model.dart';
 import 'package:shopnest/screens/sign_in_screen.dart';
 import 'package:shopnest/widgets/account_row_card.dart';
-import 'package:shopnest/widgets/custom_button.dart';
-import 'package:shopnest/widgets/custom_input_field.dart';
-
 import '../cubit/main_state.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
@@ -47,10 +42,11 @@ class AccountSettingsScreen extends StatelessWidget {
               builder: (context, state) {
                 return Column(
                   children: [
-                    AccountRowCard(title: "Name", text: snapshot.data!.name!, onTap: () {},),
-                    AccountRowCard(title: "PhoneNumber", text: snapshot.data!.phone!, onTap: () {},),
-                    AccountRowCard(title: "Email address", text: snapshot.data!.email!, onTap: () {},),
-                    AccountRowCard(title: "Logout", text: "Logout and return to sign-in page", onTap: () {
+                    AccountRowCard(title: "Name", text: snapshot.data!.name!),
+                    AccountRowCard(title: "Phone number", text: snapshot.data!.phone!),
+                    AccountRowCard(title: "Email address", text: snapshot.data!.email!),
+                    AccountRowCard(title: "Logout", text: "Logout and return to sign-in page",
+                      onTap: () {
                       context.read<MainCubit>().logout();
                       Navigator.pushAndRemoveUntil(
                         context,

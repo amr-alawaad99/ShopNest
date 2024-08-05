@@ -37,7 +37,7 @@ final class SignUpFailureState extends MainState {
   SignUpFailureState({required this.errorMessage});
 }
 
-/// Sign-up States
+/// Get User Profile States
 final class GetUserProfileLoadingState extends MainState {}
 
 final class GetUserProfileSuccessState extends MainState {}
@@ -46,6 +46,23 @@ final class GetUserProfileFailureState extends MainState {
   final String errorMessage;
 
   GetUserProfileFailureState({required this.errorMessage});
+}
+
+/// Update User Profile States
+final class UpdateUserProfileLoadingState extends MainState {}
+
+final class UpdateUserProfileSuccessState extends MainState {
+  final bool status;
+  final String message;
+
+  UpdateUserProfileSuccessState({required this.status, required this.message});
+
+}
+
+final class UpdateUserProfileFailureState extends MainState {
+  final String errorMessage;
+
+  UpdateUserProfileFailureState({required this.errorMessage});
 }
 
 /// Get home screen data states
@@ -88,3 +105,14 @@ final class BottomNavBarChangeState extends MainState{}
 final class AddedxDeletedFavoriteItemState extends MainState{}
 /// Add/Delete to/from Cart state
 final class AddedxDeletedCartItemState extends MainState{}
+
+/// Remove all items in Cart state
+final class RemoveAllCartItemsLoadingState extends MainState {}
+
+final class RemoveAllCartItemsSuccessState extends MainState {}
+
+final class RemoveAllCartItemsFailureState extends MainState {
+  final String errorMessage;
+
+  RemoveAllCartItemsFailureState({required this.errorMessage});
+}

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shopnest/screens/check_out_screen.dart';
 import 'package:shopnest/widgets/custom_button.dart';
 import 'package:shopnest/widgets/shake_Icon_button_widget.dart';
 
@@ -237,12 +238,12 @@ class CartProductsWidget extends StatelessWidget {
                               height: 5.h,
                             ),
                             Container(
-                              padding: EdgeInsets.zero,
+                              padding: EdgeInsets.all(7.sp),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(25.sp),
                               ),
-                              child: IconButton(
+                              child: ShakeIconButton(
                                 onPressed: () {
                                   context.read<MainCubit>().addXdeleteCart(e.id!, e);
                                   context.read<MainCubit>().itemsInCart--;
@@ -283,7 +284,9 @@ class CartProductsWidget extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10.h,),
-              CustomButton(innerText: "Continue", onPressed: () {},),
+              CustomButton(innerText: "CHECKOUT", onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOutScreen(products: productModel,),));
+              },),
             ],
           ),
         ),
