@@ -22,21 +22,21 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocConsumer<MainCubit, MainState>(
-        listener: (context, state) async {
-          if (state is SignInSuccessState && !state.state) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is SignInSuccessState && state.state) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (route) => false,);
-          } else if (state is SignInFailureState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            body: SingleChildScrollView(
+    return BlocConsumer<MainCubit, MainState>(
+      listener: (context, state) async {
+        if (state is SignInSuccessState && !state.state) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+        } else if (state is SignInSuccessState && state.state) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LayoutScreen(),), (route) => false,);
+        } else if (state is SignInFailureState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 35.w),
                 child: Form(
@@ -131,9 +131,9 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
