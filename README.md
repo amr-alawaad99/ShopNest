@@ -1,16 +1,5 @@
 # shopnest
 
-A new Flutter shop app project, whit Firebase and rest API
+ShopNest, an e-commerce shopping app designed with a REST API as back-end. ShopNest offers a classic shopping experience and blending robust functionality with an intuitive user interface.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
